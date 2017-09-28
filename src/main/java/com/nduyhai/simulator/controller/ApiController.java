@@ -4,6 +4,9 @@ import com.nduyhai.simulator.entity.ApiEntity;
 import com.nduyhai.simulator.entity.ApiKey;
 import com.nduyhai.simulator.repository.ApiRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +30,14 @@ public class ApiController {
         final String url = requestURL.substring(requestURL.lastIndexOf(API_ROOT) + API_ROOT.length());
         final String method = request.getMethod();
 
-        final ApiEntity api = this.apiRepository.findOne(new ApiKey(RequestMethod.valueOf(method), url ));
+        final ApiKey apiKey = new ApiKey(RequestMethod.valueOf(method), url );
+
+        return this.cache(apiKey);
+    }
+
+    @Cacheable(cacheNames = "apiCache")
+    public ResponseEntity<String> cache(final ApiKey apiKey) {
+        final ApiEntity api = this.apiRepository.findOne(apiKey);
 
         if (api == null) {
             return  new ResponseEntity<>(HttpStatus.BAD_REQUEST);
