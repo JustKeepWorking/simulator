@@ -1,4 +1,4 @@
-package com.nduyhai.demo;
+package com.nduyhai.simulator;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -1,4 +1,4 @@
-package com.nduyhai.demo;
+package com.nduyhai.simulator;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
