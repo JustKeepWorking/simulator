@@ -12,7 +12,7 @@ public class ApiService {
     @Autowired
     private ApiRepository apiRepository;
 
-    @Cacheable(value="apiCache")
+    @Cacheable(value="apiCache", key = "#apiKey")
     public ApiEntity findOne(final ApiKey apiKey) {
         return this.apiRepository.findOne(apiKey);
     }
